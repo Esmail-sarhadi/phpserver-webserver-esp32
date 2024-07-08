@@ -1,15 +1,3 @@
-
-
----
-
-**IoT Multi-Sensor Monitor with ESP32**
-
-This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32, where users can also toggle a connected lamp and download recorded data.
-
-### README.md
-
----
-
 # IoT Multi-Sensor Monitor with ESP32
 
 This project is an Internet of Things (IoT) application that uses an ESP32 microcontroller to monitor various environmental parameters. It collects data from a DHT21 sensor (temperature and humidity), a Pulse sensor, and an MQ135 gas sensor (CO2 levels). The data is displayed on a web page hosted on the ESP32, where users can also toggle a connected lamp and download recorded data.
