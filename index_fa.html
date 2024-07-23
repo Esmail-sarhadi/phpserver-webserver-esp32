@@ -144,7 +144,7 @@
         }
         
         .language-switch {
-            position: absolute;
+            position: fixed;
             top: 10px;
             right: 10px;
             display: flex;
@@ -153,6 +153,7 @@
             padding: 5px 10px;
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
         
         .language-switch img {
@@ -181,6 +182,19 @@
                 font-size: 1.5em;
             }
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        h1, h2, p, ul, ol {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -204,7 +218,7 @@
             <li><span class="emoji">🌡️</span><strong>چند حسگر</strong>: داده‌ها را از حسگر DHT21، حسگر پالس و حسگر MQ135 می‌خواند.</li>
             <li><span class="emoji">🌐</span><strong>سرور وب</strong>: یک صفحه وب برای نمایش داده‌های حسگر و کنترل چراغ میزبانی می‌کند.</li>
             <li><span class="emoji">💾</span><strong>SPIFFS</strong>: داده‌ها را به صورت محلی در سیستم فایل ESP32 ذخیره می‌کند.</li>
-            <li><span class="emoji">📋</span><strong>JSON</strong>: از JSON برای تبادل داده‌ها بین ESP32 و رابط وب استفاده می‌کند.</li>
+            <li><span class="emoji">🛠️</span><strong>کنترل GPIO</strong>: از طریق رابط وب چراغ LED را روشن و خاموش می‌کند.</li>
         </ul>
 
         <h2>سخت‌افزار مورد نیاز</h2>
@@ -224,7 +238,23 @@
             <li><span class="emoji">⚙️</span>Adafruit Sensor</li>
         </ul>
 
-        <p>برای شروع، پروژه را از مخزن گیت‌هاب کلون کنید، کد را بر روی ESP32 آپلود کنید و مانیتور سریال را باز کنید تا جزئیات اتصال به WiFi را مشاهده کنید. با استفاده از آدرس IP نمایش داده شده به رابط وب دسترسی پیدا کنید.</p>
+        <h2>مشارکت</h2>
+        <p>لطفاً این مخزن را فورک کنید و با ارسال درخواست‌های کشش (pull requests) مشارکت کنید. برای تغییرات عمده، لطفاً ابتدا یک issue باز کنید تا در مورد آنچه می‌خواهید تغییر دهید بحث کنیم.</p>
+
+        <h2>پروفایل</h2>
+        <p>پروفایل GitHub من را بررسی کنید: <a href="https://github.com/Esmail-sarhadi" target="_blank">اسماعیل سرحدی</a></p>
+
+        <h2>لینک پروژه</h2>
+        <p>این پروژه را در GitHub مشاهده کنید: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
+
+        <h2>حمایت مالی</h2>
+        <p>اگر این پروژه را مفید می‌دانید، لطفاً حمایت مالی کنید:</p>
+        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
+            <i class="fas fa-hand-holding-heart"></i> حمایت مالی
+        </a></p>
+
+        <h2>مجوز</h2>
+        <p>این پروژه تحت مجوز MIT منتشر شده است - برای جزئیات بیشتر فایل <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> را ببینید.</p>
 
         <a href="https://github.com/your-repo-url" class="btn"><i class="fas fa-download"></i> دانلود کد</a>
     </div>
@@ -232,5 +262,47 @@
     <div class="footer">
         &copy; 2023 اسماعیل سرحدی. تمامی حقوق محفوظ است.
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>
+        anchors.add();
+        
+        // اضافه کردن اسکرول نرم
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // اضافه کردن انیمیشن برای المان‌ها در هنگام اسکرول
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('h1, h2, p, ul, ol').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        h1, h2, p, ul, ol {
+            opacity: 0;
+        }
+    </style>
 </body>
 </html>
