@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="vqq11CWNVkLVnZvjCeZReKc8-FRmgxek2SOWjr35CbY" />
+    <link rel="shortcut icon" type="image/png" href="android-chrome-512x512.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>مانیتور چند سنسوره IoT با ESP32 | phpserver-webserver-esp32</title>
+    <meta name="description" content="این پروژه یک راه‌حل مبتنی بر IoT برای نظارت بر شرایط محیطی با استفاده از میکروکنترلر ESP32 است. داده‌ها از چندین سنسور از جمله سنسور DHT21 برای دما و رطوبت، سنسور ضربان و سنسور گاز MQ135 برای سطوح CO2 جمع‌آوری می‌شود. داده‌ها در یک رابط وب میزبانی شده روی ESP32 نمایش داده می‌شود.">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f4f4;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-color);
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        h1:hover, h2:hover {
+            color: var(--secondary-color);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-top: 0;
+            padding-top: 20px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        p, ul, ol {
+            margin-bottom: 20px;
+        }
+        
+        ul, ol {
+            padding-right: 20px;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .feature-list, .hardware-list, .software-list {
+            list-style-type: none;
+            padding-right: 0;
+        }
+        
+        .feature-list li, .hardware-list li, .software-list li {
+            margin-bottom: 10px;
+            padding-right: 30px;
+            position: relative;
+        }
+        
+        .feature-list li:before, .hardware-list li:before, .software-list li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--secondary-color);
+            position: absolute;
+            right: 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-list li:hover:before, .hardware-list li:hover:before, .software-list li:hover:before {
+            transform: scale(1.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        .language-switch {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .language-switch img {
+            transition: transform 0.3s ease;
+        }
+        .language-switch img:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <span style="font-size: 1.2em; font-weight: bold; margin-right: 10px;">زبان</span>
+        <a href="index.html" style="text-decoration: none; margin: 0 5px;">
+            <img src="https://flagcdn.com/w40/gb.png" width="30" alt="English">
+        </a>
+        <a href="index_fa.html" style="text-decoration: none; margin: 0 5px;">
+            <img src="https://flagcdn.com/w40/ir.png" width="30" alt="فارسی">
+        </a>
+    </div>
+    <div class="container">
+        <h1>مانیتور چند سنسوره IoT با ESP32</h1>
+
+        <p>این پروژه یک کاربرد اینترنت اشیا (IoT) است که از یک میکروکنترلر ESP32 برای نظارت بر پارامترهای مختلف محیطی استفاده می‌کند. داده‌ها را از یک سنسور DHT21 (دما و رطوبت)، یک سنسور ضربان و یک سنسور گاز MQ135 (سطوح CO2) جمع‌آوری می‌کند. داده‌ها در یک صفحه وب میزبانی شده روی ESP32 نمایش داده می‌شود، جایی که کاربران همچنین می‌توانند یک لامپ متصل را روشن و خاموش کنند و داده‌های ثبت شده را دانلود کنند.</p>
+
+        <h2>ویژگی‌ها</h2>
+        <ul class="feature-list">
+            <li><strong>اتصال WiFi</strong>: به یک شبکه WiFi مشخص شده متصل می‌شود.</li>
+            <li><strong>سنسورهای متعدد</strong>: داده‌ها را از سنسورهای DHT21، سنسور ضربان و سنسور MQ135 می‌خواند.</li>
+            <li><strong>سرور وب</strong>: یک صفحه وب را برای نمایش داده‌های سنسور و کنترل یک لامپ میزبانی می‌کند.</li>
+            <li><strong>SPIFFS</strong>: داده‌ها را به صورت محلی در سیستم فایل ESP32 ذخیره می‌کند.</li>
+            <li><strong>JSON</strong>: از JSON برای تبادل داده بین ESP32 و رابط وب استفاده می‌کند.</li>
+        </ul>
+
+        <h2>سخت‌افزار مورد نیاز</h2>
+        <ul class="hardware-list">
+            <li>میکروکنترلر ESP32</li>
+            <li>سنسور دما و رطوبت DHT21</li>
+            <li>سنسور ضربان</li>
+            <li>سنسور گاز MQ135</li>
+            <li>لامپ LED (اختیاری)</li>
+            <li>مقاومت‌ها، بردبورد و سیم‌های جامپر</li>
+        </ul>
+
+        <h2>نرم‌افزار مورد نیاز</h2>
+        <ul class="software-list">
+            <li>Arduino IDE با پشتیبانی ESP32</li>
+            <li>کتابخانه ArduinoJson</li>
+            <li>کتابخانه سنسور DHT</li>
+            <li>کتابخانه WiFi</li>
+            <li>کتابخانه WebServer</li>
+            <li>کتابخانه SPIFFS</li>
+            <li>کتابخانه HTTPClient</li>
+        </ul>
+
+        <h2>نمودار مدار</h2>
+        <p>سنسورها را به ESP32 به شرح زیر متصل کنید:</p>
+
+        <h3>سنسور DHT21</h3>
+        <ul>
+            <li><strong>VCC</strong> به 3.3V</li>
+            <li><strong>GND</strong> به GND</li>
+            <li><strong>DATA</strong> به GPIO4</li>
+        </ul>
+
+        <h3>سنسور ضربان</h3>
+        <ul>
+            <li><strong>سیم بنفش</strong> به GPIO36</li>
+        </ul>
+
+        <h3>سنسور MQ135</h3>
+        <ul>
+            <li><strong>خروجی آنالوگ</strong> به GPIO34</li>
+        </ul>
+
+        <h3>لامپ</h3>
+        <ul>
+            <li><strong>پین کنترل</strong> به GPIO2 (با مقاومت مناسب)</li>
+        </ul>
+
+        <h2>توضیح کد</h2>
+        <ol>
+            <li><strong>شامل کردن کتابخانه‌ها</strong>: کتابخانه‌های لازم برای WiFi، سرور وب، سنسور DHT، SPIFFS و JSON را شامل می‌کند.</li>
+            <li><strong>پیکربندی WiFi</strong>: اعتبارنامه‌های WiFi را برای اتصال به شبکه تنظیم می‌کند.</li>
+            <li><strong>راه‌اندازی سنسورها</strong>: سنسورهای DHT21، سنسور ضربان و سنسور MQ135 را راه‌اندازی می‌کند.</li>
+            <li><strong>مسیرهای سرور وب</strong>: مسیرهایی را برای صفحه اصلی، روشن و خاموش کردن لامپ، خواندن داده‌های سنسور و دانلود داده‌ها تعریف می‌کند.</li>
+            <li><strong>صفحه اصلی</strong>: یک صفحه HTML را ارائه می‌دهد که داده‌های سنسور را نمایش می‌دهد و دکمه‌هایی برای روشن و خاموش کردن لامپ و دانلود داده‌ها فراهم می‌کند.</li>
+            <li><strong>مدیریت داده‌ها</strong>: داده‌های سنسور را می‌خواند، آن‌ها را در SPIFFS ذخیره می‌کند و به یک سرور از راه دور ارسال می‌کند.</li>
+        </ol>
+
+        <h2>راه‌اندازی و نصب</h2>
+        <ol>
+            <li><strong>نصب Arduino IDE</strong>: مطمئن شوید که Arduino IDE روی کامپیوتر شما نصب شده است.</li>
+            <li><strong>نصب برد ESP32 در Arduino IDE</strong>:
+                <ul>
+                    <li>به <code>File</code> > <code>Preferences</code> بروید.</li>
+                    <li><code>https://dl.espressif.com/dl/package_esp32_index.json</code> را به <code>Additional Board Manager URLs</code> اضافه کنید.</li>
+                    <li><code>Boards Manager</code> را از <code>Tools</code> > <code>Board</code> باز کنید و بسته <code>esp32</code> را نصب کنید.</li>
+                </ul>
+            </li>
+            <li><strong>نصب کتابخانه‌های مورد نیاز</strong>:
+                <ul>
+                    <li>به <code>Sketch</code> > <code>Include Library</code> > <code>Manage Libraries</code> بروید.</li>
+                    <li>کتابخانه‌های زیر را نصب کنید: <code>ArduinoJson</code>، <code>DHT sensor library</code>، <code>WiFi</code>، <code>WebServer</code>، <code>SPIFFS</code>، <code>HTTPClient</code>.</li>
+                </ul>
+            </li>
+            <li><strong>ESP32 را به کامپیوتر خود متصل کنید</strong>: از یک کابل USB برای اتصال ESP32 به کامپیوتر خود استفاده کنید.</li>
+            <li><strong>آپلود کد</strong>: کد ارائه شده را در Arduino IDE باز کنید و آن را به ESP32 آپلود کنید.</li>
+        </ol>
+
+        <h2>اجرای پروژه</h2>
+        <ol>
+            <li><strong>روشن کردن ESP32</strong>: پس از آپلود کد، ESP32 را با استفاده از اتصال USB یا یک منبع تغذیه خارجی روشن کنید.</li>
+            <li><strong>اتصال به WiFi</strong>: ESP32 تلاش خواهد کرد به شبکه WiFi مشخص شده متصل شود.</li>
+            <li><strong>دسترسی به رابط وب</strong>:
+                <ul>
+                    <li>یک مرورگر وب را در دستگاهی که به همان شبکه WiFi متصل است باز کنید.</li>
+                    <li>آدرس IP مربوط به ESP32 که در Serial Monitor نمایش داده شده است را وارد کنید.</li>
+                </ul>
+            </li>
+            <li><strong>نظارت بر داده‌ها</strong>: داده‌های دما، رطوبت، سطوح CO2 و ضربان قلب را مشاهده کنید، لامپ را روشن و خاموش کنید و داده‌های ثبت شده را از رابط وب دانلود کنید.</li>
+        </ol>
+
+        <h2>مشارکت</h2>
+        <p>لطفاً این مخزن را فورک کنید و با ارسال درخواست‌های کشش (pull requests) مشارکت کنید. برای تغییرات عمده، لطفاً ابتدا یک issue باز کنید تا در مورد آنچه می‌خواهید تغییر دهید بحث کنیم.</p>
+
+        <h2>پروفایل</h2>
+        <p>پروفایل GitHub من را بررسی کنید: <a href="https://github.com/Esmail-sarhadi" target="_blank">اسماعیل سرحدی</a></p>
+
+        <h2>لینک پروژه</h2>
+        <p>این پروژه را در GitHub مشاهده کنید: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
+
+        <h2>حمایت مالی</h2>
+        <p>اگر این پروژه را مفید می‌دانید، لطفاً حمایت مالی کنید:</p>
+        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
+            <i class="fas fa-hand-holding-heart"></i> حمایت مالی
+        </a></p>
+
+        <h2>مجوز</h2>
+        <p>این پروژه تحت مجوز MIT منتشر شده است - برای جزئیات بیشتر فایل <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> را ببینید.</p>
+
+        <div class="footer">
+            <p>این سایت متن باز است. <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32/edit/main/README.md">بهبود این صفحه</a>.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>
+        anchors.add();
+        
+        // اضافه کردن اسکرول نرم
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // اضافه کردن انیمیشن برای المان‌ها در هنگام اسکرول
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('h1, h2, p, ul, ol').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        h1, h2, p, ul, ol {
+            opacity: 0;
+        }
+    </style>
+</body>
+</html>
