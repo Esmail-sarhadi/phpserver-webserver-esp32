@@ -1,189 +1,302 @@
-
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="vqq11CWNVkLVnZvjCeZReKc8-FRmgxek2SOWjr35CbY" />
     <link rel="shortcut icon" type="image/png" href="android-chrome-512x512.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>IoT Multi-Sensor Monitor with ESP32 | phpserver-webserver-esp32</title>
-<meta name="generator" content="Jekyll v3.9.5" />
-<meta property="og:title" content="IoT Multi-Sensor Monitor with ESP32" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32" />
-<meta property="og:description" content="This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32" />
-<link rel="canonical" href="https://esmail-sarhadi.github.io/phpserver-webserver-esp32/" />
-<meta property="og:url" content="https://esmail-sarhadi.github.io/phpserver-webserver-esp32/" />
-<meta property="og:site_name" content="phpserver-webserver-esp32" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="IoT Multi-Sensor Monitor with ESP32" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","description":"This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32","headline":"IoT Multi-Sensor Monitor with ESP32","name":"phpserver-webserver-esp32","url":"https://esmail-sarhadi.github.io/phpserver-webserver-esp32/"}</script>
-<!-- End Jekyll SEO tag -->
+    <title>IoT Multi-Sensor Monitor with ESP32 | phpserver-webserver-esp32</title>
+    <meta name="description" content="This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f4f4;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-top: 0;
+            padding-top: 20px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        p, ul, ol {
+            margin-bottom: 20px;
+        }
+        
+        ul, ol {
+            padding-left: 20px;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .feature-list, .hardware-list, .software-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .feature-list li, .hardware-list li, .software-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .feature-list li:before, .hardware-list li:before, .software-list li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        .language-switch {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .language-switch img {
+            transition: transform 0.3s ease;
+        }
+        .language-switch img:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <span style="font-size: 1.2em; font-weight: bold; margin-left: 10px;">Language</span>
+        <a href="index.html" style="text-decoration: none; margin: 0 5px;">
+            <img src="https://flagcdn.com/w40/gb.png" width="30" alt="English">
+        </a>
+        <a href="index_fa.html" style="text-decoration: none; margin: 0 5px;">
+            <img src="https://flagcdn.com/w40/ir.png" width="30" alt="Persian">
+        </a>
+    <div class="container">
+        <h1>IoT Multi-Sensor Monitor with ESP32</h1>
 
-    <link rel="stylesheet" href="/phpserver-webserver-esp32/assets/css/style.css?v=cdda13928a327ab0aae009f340b7d54b5191378f">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+        <p>This project is an Internet of Things (IoT) application that uses an ESP32 microcontroller to monitor various environmental parameters. It collects data from a DHT21 sensor (temperature and humidity), a Pulse sensor, and an MQ135 gas sensor (CO2 levels). The data is displayed on a web page hosted on the ESP32, where users can also toggle a connected lamp and download recorded data.</p>
 
-<!-- Setup Google Analytics -->
+        <h2>Features</h2>
+        <ul class="feature-list">
+            <li><strong>WiFi Connectivity</strong>: Connects to a specified WiFi network.</li>
+            <li><strong>Multiple Sensors</strong>: Reads data from DHT21, Pulse sensor, and MQ135 sensor.</li>
+            <li><strong>Web Server</strong>: Hosts a web page to display sensor data and control a lamp.</li>
+            <li><strong>SPIFFS</strong>: Stores data locally on the ESP32 filesystem.</li>
+            <li><strong>JSON</strong>: Uses JSON for data interchange between the ESP32 and the web interface.</li>
+        </ul>
 
+        <h2>Hardware Required</h2>
+        <ul class="hardware-list">
+            <li>ESP32 microcontroller</li>
+            <li>DHT21 temperature and humidity sensor</li>
+            <li>Pulse sensor</li>
+            <li>MQ135 gas sensor</li>
+            <li>LED lamp (optional)</li>
+            <li>Resistors, breadboard, and jumper wires</li>
+        </ul>
 
+        <h2>Software Required</h2>
+        <ul class="software-list">
+            <li>Arduino IDE with ESP32 support</li>
+            <li>ArduinoJson library</li>
+            <li>DHT sensor library</li>
+            <li>WiFi library</li>
+            <li>WebServer library</li>
+            <li>SPIFFS library</li>
+            <li>HTTPClient library</li>
+        </ul>
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/phpserver-webserver-esp32/favicon.ico" -->
+        <h2>Circuit Diagram</h2>
+        <p>Connect the sensors to the ESP32 as follows:</p>
 
-<!-- end custom head snippets -->
+        <h3>DHT21 Sensor</h3>
+        <ul>
+            <li><strong>VCC</strong> to 3.3V</li>
+            <li><strong>GND</strong> to GND</li>
+            <li><strong>DATA</strong> to GPIO4</li>
+        </ul>
 
-  </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="https://esmail-sarhadi.github.io/phpserver-webserver-esp32/">phpserver-webserver-esp32</a></h1>
-      
+        <h3>Pulse Sensor</h3>
+        <ul>
+            <li><strong>Purple wire</strong> to GPIO36</li>
+        </ul>
 
-      <h1 id="iot-multi-sensor-monitor-with-esp32">IoT Multi-Sensor Monitor with ESP32</h1>
+        <h3>MQ135 Sensor</h3>
+        <ul>
+            <li><strong>Analog output</strong> to GPIO34</li>
+        </ul>
 
-<p>This project is an Internet of Things (IoT) application that uses an ESP32 microcontroller to monitor various environmental parameters. It collects data from a DHT21 sensor (temperature and humidity), a Pulse sensor, and an MQ135 gas sensor (CO2 levels). The data is displayed on a web page hosted on the ESP32, where users can also toggle a connected lamp and download recorded data.</p>
+        <h3>Lamp</h3>
+        <ul>
+            <li><strong>Control pin</strong> to GPIO2 (with appropriate resistor)</li>
+        </ul>
 
-<h2 id="features">Features</h2>
+        <h2>Code Explanation</h2>
+        <ol>
+            <li><strong>Library Inclusions</strong>: Includes necessary libraries for WiFi, web server, DHT sensor, SPIFFS, and JSON.</li>
+            <li><strong>WiFi Configuration</strong>: Sets up WiFi credentials for network connection.</li>
+            <li><strong>Sensor Initialization</strong>: Initializes the DHT21, Pulse sensor, and MQ135 sensor.</li>
+            <li><strong>Web Server Routes</strong>: Defines routes for the main page, toggling the lamp, reading sensor data, and downloading data.</li>
+            <li><strong>Main Page</strong>: Serves an HTML page that displays sensor data and provides buttons for toggling the lamp and downloading data.</li>
+            <li><strong>Data Handling</strong>: Reads sensor data, stores it in SPIFFS, and sends it to a remote server.</li>
+        </ol>
 
-<ul>
-  <li><strong>WiFi Connectivity</strong>: Connects to a specified WiFi network.</li>
-  <li><strong>Multiple Sensors</strong>: Reads data from DHT21, Pulse sensor, and MQ135 sensor.</li>
-  <li><strong>Web Server</strong>: Hosts a web page to display sensor data and control a lamp.</li>
-  <li><strong>SPIFFS</strong>: Stores data locally on the ESP32 filesystem.</li>
-  <li><strong>JSON</strong>: Uses JSON for data interchange between the ESP32 and the web interface.</li>
-</ul>
+        <h2>Setup and Installation</h2>
+        <ol>
+            <li><strong>Install Arduino IDE</strong>: Make sure you have the Arduino IDE installed on your computer.</li>
+            <li><strong>Install ESP32 Board in Arduino IDE</strong>:
+                <ul>
+                    <li>Go to <code>File</code> > <code>Preferences</code>.</li>
+                    <li>Add <code>https://dl.espressif.com/dl/package_esp32_index.json</code> to the <code>Additional Board Manager URLs</code>.</li>
+                    <li>Open the <code>Boards Manager</code> from <code>Tools</code> > <code>Board</code> and install the <code>esp32</code> package.</li>
+                </ul>
+            </li>
+            <li><strong>Install Required Libraries</strong>:
+                <ul>
+                    <li>Go to <code>Sketch</code> > <code>Include Library</code> > <code>Manage Libraries</code>.</li>
+                    <li>Install the following libraries: <code>ArduinoJson</code>, <code>DHT sensor library</code>, <code>WiFi</code>, <code>WebServer</code>, <code>SPIFFS</code>, <code>HTTPClient</code>.</li>
+                </ul>
+            </li>
+            <li><strong>Connect ESP32 to Your Computer</strong>: Use a USB cable to connect the ESP32 to your computer.</li>
+            <li><strong>Upload the Code</strong>: Open the provided code in Arduino IDE and upload it to the ESP32.</li>
+        </ol>
 
-<h2 id="hardware-required">Hardware Required</h2>
+        <h2>Running the Project</h2>
+        <ol>
+            <li><strong>Power the ESP32</strong>: After uploading the code, power the ESP32 using the USB connection or an external power source.</li>
+            <li><strong>Connect to WiFi</strong>: The ESP32 will attempt to connect to the specified WiFi network.</li>
+            <li><strong>Access the Web Interface</strong>:
+                <ul>
+                    <li>Open a web browser on a device connected to the same WiFi network.</li>
+                    <li>Enter the IP address of the ESP32 displayed in the Serial Monitor.</li>
+                </ul>
+            </li>
+            <li><strong>Monitor Data</strong>: View temperature, humidity, CO2 levels, and heart rate data, toggle the lamp, and download recorded data from the web interface.</li>
+        </ol>
 
-<ul>
-  <li>ESP32 microcontroller</li>
-  <li>DHT21 temperature and humidity sensor</li>
-  <li>Pulse sensor</li>
-  <li>MQ135 gas sensor</li>
-  <li>LED lamp (optional)</li>
-  <li>Resistors, breadboard, and jumper wires</li>
-</ul>
+        <h2>Contribution</h2>
+        <p>Feel free to fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
 
-<h2 id="software-required">Software Required</h2>
+        <h2>Profile</h2>
+        <p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
 
-<ul>
-  <li>Arduino IDE with ESP32 support</li>
-  <li>ArduinoJson library</li>
-  <li>DHT sensor library</li>
-  <li>WiFi library</li>
-  <li>WebServer library</li>
-  <li>SPIFFS library</li>
-  <li>HTTPClient library</li>
-</ul>
+        <h2>Project Link</h2>
+        <p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
 
-<h2 id="circuit-diagram">Circuit Diagram</h2>
+        <h2>Donation</h2>
+        <p>If you find this project helpful, consider making a donation:</p>
+        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
+            <i class="fas fa-hand-holding-heart"></i> Donate Now
+        </a></p>
 
-<p>Connect the sensors to the ESP32 as follows:</p>
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
 
-<h3 id="dht21-sensor">DHT21 Sensor</h3>
-<ul>
-  <li><strong>VCC</strong> to 3.3V</li>
-  <li><strong>GND</strong> to GND</li>
-  <li><strong>DATA</strong> to GPIO4</li>
-</ul>
-
-<h3 id="pulse-sensor">Pulse Sensor</h3>
-<ul>
-  <li><strong>Purple wire</strong> to GPIO36</li>
-</ul>
-
-<h3 id="mq135-sensor">MQ135 Sensor</h3>
-<ul>
-  <li><strong>Analog output</strong> to GPIO34</li>
-</ul>
-
-<h3 id="lamp">Lamp</h3>
-<ul>
-  <li><strong>Control pin</strong> to GPIO2 (with appropriate resistor)</li>
-</ul>
-
-<h2 id="code-explanation">Code Explanation</h2>
-
-<ol>
-  <li><strong>Library Inclusions</strong>: Includes necessary libraries for WiFi, web server, DHT sensor, SPIFFS, and JSON.</li>
-  <li><strong>WiFi Configuration</strong>: Sets up WiFi credentials for network connection.</li>
-  <li><strong>Sensor Initialization</strong>: Initializes the DHT21, Pulse sensor, and MQ135 sensor.</li>
-  <li><strong>Web Server Routes</strong>: Defines routes for the main page, toggling the lamp, reading sensor data, and downloading data.</li>
-  <li><strong>Main Page</strong>: Serves an HTML page that displays sensor data and provides buttons for toggling the lamp and downloading data.</li>
-  <li><strong>Data Handling</strong>: Reads sensor data, stores it in SPIFFS, and sends it to a remote server.</li>
-</ol>
-
-<h2 id="setup-and-installation">Setup and Installation</h2>
-
-<ol>
-  <li><strong>Install Arduino IDE</strong>: Make sure you have the Arduino IDE installed on your computer.</li>
-  <li><strong>Install ESP32 Board in Arduino IDE</strong>:
-    <ul>
-      <li>Go to <code class="language-plaintext highlighter-rouge">File</code> &gt; <code class="language-plaintext highlighter-rouge">Preferences</code>.</li>
-      <li>Add <code class="language-plaintext highlighter-rouge">https://dl.espressif.com/dl/package_esp32_index.json</code> to the <code class="language-plaintext highlighter-rouge">Additional Board Manager URLs</code>.</li>
-      <li>Open the <code class="language-plaintext highlighter-rouge">Boards Manager</code> from <code class="language-plaintext highlighter-rouge">Tools</code> &gt; <code class="language-plaintext highlighter-rouge">Board</code> and install the <code class="language-plaintext highlighter-rouge">esp32</code> package.</li>
-    </ul>
-  </li>
-  <li><strong>Install Required Libraries</strong>:
-    <ul>
-      <li>Go to <code class="language-plaintext highlighter-rouge">Sketch</code> &gt; <code class="language-plaintext highlighter-rouge">Include Library</code> &gt; <code class="language-plaintext highlighter-rouge">Manage Libraries</code>.</li>
-      <li>Install the following libraries: <code class="language-plaintext highlighter-rouge">ArduinoJson</code>, <code class="language-plaintext highlighter-rouge">DHT sensor library</code>, <code class="language-plaintext highlighter-rouge">WiFi</code>, <code class="language-plaintext highlighter-rouge">WebServer</code>, <code class="language-plaintext highlighter-rouge">SPIFFS</code>, <code class="language-plaintext highlighter-rouge">HTTPClient</code>.</li>
-    </ul>
-  </li>
-  <li><strong>Connect ESP32 to Your Computer</strong>: Use a USB cable to connect the ESP32 to your computer.</li>
-  <li><strong>Upload the Code</strong>: Open the provided code in Arduino IDE and upload it to the ESP32.</li>
-</ol>
-
-<h2 id="running-the-project">Running the Project</h2>
-
-<ol>
-  <li><strong>Power the ESP32</strong>: After uploading the code, power the ESP32 using the USB connection or an external power source.</li>
-  <li><strong>Connect to WiFi</strong>: The ESP32 will attempt to connect to the specified WiFi network.</li>
-  <li><strong>Access the Web Interface</strong>:
-    <ul>
-      <li>Open a web browser on a device connected to the same WiFi network.</li>
-      <li>Enter the IP address of the ESP32 displayed in the Serial Monitor.</li>
-    </ul>
-  </li>
-  <li><strong>Monitor Data</strong>: View temperature, humidity, CO2 levels, and heart rate data, toggle the lamp, and download recorded data from the web interface.</li>
-</ol>
-
-<h2 id="contribution">Contribution</h2>
-
-<p>Feel free to fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
-<h2 id="profile">Profile</h2>
-
-<p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
-
-<h2 id="project-link">Project Link</h2>
-
-<p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
-
-<h2 id="donation">Donation</h2>
-
-<p>If you find this project helpful, consider making a donation:</p>
-<p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank">
-     <img src="https://nowpayments.io/images/embeds/donation-button-black.svg" alt="Crypto donation button by NOWPayments">
-</a></p>
-<h2 id="license">License</h2>
-
-<p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
-
-<hr />
-
-
-      
-      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
-        This site is open source. <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32/edit/main/README.md">Improve this page</a>.
-      </div>
-      
+        <div class="footer">
+            <p>This site is open source. <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32/edit/main/README.md">Improve this page</a>.</p>
+        </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-  </body>
+    <script>
+        anchors.add();
+        
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
 </html>
