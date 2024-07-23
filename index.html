@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="vqq11CWNVkLVnZvjCeZReKc8-FRmgxek2SOWjr35CbY" />
     <link rel="shortcut icon" type="image/png" href="android-chrome-512x512.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <title>IoT Multi-Sensor Monitor with ESP32 | phpserver-webserver-esp32</title>
-    <meta name="description" content="This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. It collects data from multiple sensors, including a DHT21 sensor for temperature and humidity, a Pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32">
+    <meta name="description" content="This project is an IoT solution for monitoring environmental conditions using an ESP32 microcontroller. Data is collected from multiple sensors including the DHT21 sensor for temperature and humidity, a pulse sensor, and the MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32.">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -121,50 +121,27 @@
         
         .btn {
             display: inline-block;
-            background-color: var(--primary-color);
-            color: #fff;
             padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
             border-radius: 5px;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         
         .btn:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
         }
         
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            font-size: 0.9em;
-        }
-        
-        .language-switch {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 5px 10px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .language-switch img {
-            transition: transform 0.3s ease;
-        }
-        
-        .language-switch img:hover {
-            transform: scale(1.1);
-        }
-        
-        .emoji {
-            margin-right: 10px;
-            vertical-align: middle;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            margin-top: 20px;
         }
         
         @media (max-width: 768px) {
@@ -183,49 +160,53 @@
     </style>
 </head>
 <body>
-    <div class="language-switch">
-        <span style="font-size: 1.2em; font-weight: bold; margin-left: 10px;">Language</span>
-        <a href="index.html" style="text-decoration: none; margin: 0 5px;">
-            <img src="https://flagcdn.com/w40/gb.png" width="30" alt="English">
-        </a>
-        <a href="index_fa.html" style="text-decoration: none; margin: 0 5px;">
-            <img src="https://flagcdn.com/w40/ir.png" width="30" alt="Persian">
-        </a>
-    </div>
     <div class="container">
         <h1>IoT Multi-Sensor Monitor with ESP32</h1>
-
-        <p>This project is an Internet of Things (IoT) application that uses an ESP32 microcontroller to monitor various environmental parameters. It collects data from a DHT21 sensor (temperature and humidity), a Pulse sensor, and an MQ135 gas sensor (CO2 levels). The data is displayed on a web page hosted on the ESP32, where users can also toggle a connected lamp and download recorded data.</p>
-
+        <h2>Project Overview</h2>
+        <p>This project is an IoT solution for monitoring environmental conditions using an ESP32 microcontroller. Data is collected from multiple sensors including the DHT21 sensor for temperature and humidity, a pulse sensor, and the MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32.</p>
+        
         <h2>Features</h2>
         <ul class="feature-list">
-            <li><span class="emoji">📡</span><strong>WiFi Connectivity</strong>: Connects to a specified WiFi network.</li>
-            <li><span class="emoji">🌡️</span><strong>Multiple Sensors</strong>: Reads data from DHT21, Pulse sensor, and MQ135 sensor.</li>
-            <li><span class="emoji">🌐</span><strong>Web Server</strong>: Hosts a web page to display sensor data and control a lamp.</li>
-            <li><span class="emoji">💾</span><strong>SPIFFS</strong>: Stores data locally on the ESP32 filesystem.</li>
-            <li><span class="emoji">📋</span><strong>JSON</strong>: Uses JSON for data interchange between the ESP32 and the web interface.</li>
+            <li><span class="emoji">📡</span><strong>WiFi Connectivity</strong>: Connects to your home WiFi network.</li>
+            <li><span class="emoji">📈</span><strong>Real-Time Data</strong>: Displays real-time data from all sensors.</li>
+            <li><span class="emoji">📱</span><strong>Web Interface</strong>: Access the data from any device with a web browser.</li>
+            <li><span class="emoji">🛠️</span><strong>GPIO Control</strong>: Toggle an LED on and off via the web interface.</li>
         </ul>
 
         <h2>Hardware Required</h2>
         <ul class="hardware-list">
-            <li><span class="emoji">🔌</span>ESP32 microcontroller</li>
-            <li><span class="emoji">🌡️</span>DHT21 temperature and humidity sensor</li>
-            <li><span class="emoji">❤️</span>Pulse sensor</li>
-            <li><span class="emoji">🌬️</span>MQ135 gas sensor</li>
-            <li><span class="emoji">💡</span>LED lamp (optional)</li>
-            <li><span class="emoji">🔧</span>Resistors, breadboard, and jumper wires</li>
+            <li><span class="emoji">🔌</span>ESP32 Microcontroller</li>
+            <li><span class="emoji">🌡️</span>DHT21 Temperature and Humidity Sensor</li>
+            <li><span class="emoji">❤️</span>Pulse Sensor</li>
+            <li><span class="emoji">🌫️</span>MQ135 Gas Sensor</li>
+            <li><span class="emoji">💡</span>LED</li>
+            <li><span class="emoji">🔗</span>Wires and Connectors</li>
         </ul>
 
-        <h2>Software Required</h2>
+        <h2>Software Libraries</h2>
         <ul class="software-list">
-            <li><span class="emoji">🖥️</span>Arduino IDE with ESP32 support</li>
-            <li><span class="emoji">📦</span>ArduinoJson library</li>
-            <li><span class="emoji">🌐</span>ESPAsyncWebServer library</li>
-            <li><span class="emoji">💾</span>ESPAsyncTCP library</li>
-            <li><span class="emoji">⚙️</span>Adafruit Sensor library</li>
+            <li><span class="emoji">🔌</span>ESPAsyncWebServer</li>
+            <li><span class="emoji">💾</span>ESPAsyncTCP</li>
+            <li><span class="emoji">⚙️</span>Adafruit Sensor</li>
         </ul>
 
-        <p>To get started, clone the project repository from GitHub, upload the code to your ESP32, and open the serial monitor to see the WiFi connection details. Access the web interface using the displayed IP address.</p>
+        <h2>Contribution</h2>
+        <p>Please fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
+
+        <h2>Profile</h2>
+        <p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
+
+        <h2>Project Link</h2>
+        <p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
+
+        <h2>Donate</h2>
+        <p>If you find this project useful, please consider donating:</p>
+        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
+            <i class="fas fa-hand-holding-heart"></i> Donate
+        </a></p>
+
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
 
         <a href="https://github.com/your-repo-url" class="btn"><i class="fas fa-download"></i> Download Code</a>
     </div>
@@ -233,5 +214,47 @@
     <div class="footer">
         &copy; 2023 Esmail Sarhadi. All rights reserved.
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>
+        anchors.add();
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add animation for elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('h1, h2, p, ul, ol').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        h1, h2, p, ul, ol {
+            opacity: 0;
+        }
+    </style>
 </body>
 </html>
