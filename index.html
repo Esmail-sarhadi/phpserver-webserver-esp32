@@ -7,8 +7,8 @@
     <link rel="shortcut icon" type="image/png" href="android-chrome-512x512.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>IoT Multi-Sensor Monitor with ESP32 | phpserver-webserver-esp32</title>
-    <meta name="description" content="This project is an IoT-based solution for monitoring environmental conditions using an ESP32 microcontroller. Data is collected from multiple sensors including a DHT21 sensor for temperature and humidity, a pulse sensor, and an MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32">
+    <title>Binary Tree Subtree Analysis | Binary-Tree-Subtree-Analysis</title>
+    <meta name="description" content="This repository contains a Python implementation for constructing a binary tree from a given input, analyzing the maximum subtree sum, and finding the path to the node with the maximum subtree sum. The implementation uses a divide-and-conquer approach to solve the problem efficiently.">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -208,60 +208,59 @@
         </a>
     </div>
     <div class="container">
-        <h1>IoT Multi-Sensor Monitor with ESP32</h1>
+        <h1>Binary Tree Subtree Analysis</h1>
+        
+        <h2 id="overview">Overview</h2>
+        <p>This repository contains a Python implementation for constructing a binary tree from a given input, analyzing the maximum subtree sum, and finding the path to the node with the maximum subtree sum. The implementation uses a divide-and-conquer approach to solve the problem efficiently.</p>
 
-        <p>This project is an Internet of Things (IoT) application that uses an ESP32 microcontroller to monitor various environmental parameters. Data is collected from a DHT21 sensor (temperature and humidity), a pulse sensor, and an MQ135 gas sensor (CO2 levels). The data is displayed on a web page hosted on the ESP32 where users can turn on and off a connected light and download the recorded data.</p>
-
-        <h2>Features</h2>
+        <h2 id="features">Features</h2>
         <ul class="feature-list">
-            <li><span class="emoji">📡</span><strong>Wi-Fi Connectivity</strong>: Connects to a specified Wi-Fi network.</li>
-            <li><span class="emoji">🌡️</span><strong>Multiple Sensors</strong>: Reads data from DHT21 sensor, pulse sensor, and MQ135 sensor.</li>
-            <li><span class="emoji">🌐</span><strong>Web Server</strong>: Hosts a web page to display sensor data and control the light.</li>
-            <li><span class="emoji">💾</span><strong>SPIFFS</strong>: Stores data locally in the ESP32 file system.</li>
-            <li><span class="emoji">🛠️</span><strong>GPIO Control</strong>: Turns an LED light on and off via the web interface.</li>
+            <li><strong>Tree Construction</strong>: Build a binary tree from a list of values, with <code class="language-plaintext highlighter-rouge">'*'</code> representing the root, <code class="language-plaintext highlighter-rouge">'+'</code> for internal nodes, and numerical values for leaf nodes.</li>
+            <li><strong>Subtree Analysis</strong>: Calculate the maximum sum of any subtree and identify the node contributing to this maximum sum.</li>
+            <li><strong>Path Finding</strong>: Trace the path from the node with the maximum subtree sum to the root of the tree.</li>
         </ul>
 
-        <h2>Required Hardware</h2>
+        <h2 id="code-explanation">Code Explanation</h2>
+        <ul class="feature-list">
+            <li><strong>Node Class</strong>: Represents a node in the binary tree with attributes for value, parent, left child, and right child.</li>
+            <li><strong>create_tree Function</strong>: Constructs the binary tree from a list of values. The tree is built in reverse order to ensure correct placement of nodes.</li>
+            <li><strong>divide_and_conquer Function</strong>: Recursively calculates the maximum sum of subtrees and identifies the node with the maximum subtree sum.</li>
+            <li><strong>find_path_of_max_subtree Function</strong>: Traces the path from the node with the maximum subtree sum to the root, returning the path as a string.</li>
+            <li><strong>print_tree Function</strong>: Prints the structure of the tree for visual representation, showing connections between nodes.</li>
+            <li><strong>Main Function</strong>: Creates a sample tree, finds the maximum subtree sum and path, and prints the results.</li>
+        </ul>
+        
+        <h2 id="usage">Usage</h2>
+        <p>To use this implementation, clone the repository and run the <code>analysis.py</code> script with the desired input values.</p>
+        <pre><code class="language-python">python analysis.py</code></pre>
+
+        <h2 id="hardware">Hardware Requirements</h2>
         <ul class="hardware-list">
-            <li><span class="emoji">🔌</span>ESP32 Microcontroller</li>
-            <li><span class="emoji">🌡️</span>DHT21 Temperature and Humidity Sensor</li>
-            <li><span class="emoji">❤️</span>Pulse Sensor</li>
-            <li><span class="emoji">🌫️</span>MQ135 Gas Sensor</li>
-            <li><span class="emoji">💡</span>LED Light</li>
-            <li><span class="emoji">🔗</span>Cables and Connections</li>
+            <li>Computer or Raspberry Pi</li>
+            <li>Python 3.x installed</li>
         </ul>
 
-        <h2>Software Libraries</h2>
+        <h2 id="software">Software Requirements</h2>
         <ul class="software-list">
-            <li><span class="emoji">🔌</span>ESPAsyncWebServer</li>
-            <li><span class="emoji">💾</span>ESPAsyncTCP</li>
-            <li><span class="emoji">⚙️</span>Adafruit Sensor</li>
+            <li>Python 3.x</li>
+            <li>Required Libraries: <code>numpy</code>, <code>matplotlib</code>, <code>networkx</code></li>
+            <li>IDE or Text Editor of your choice</li>
         </ul>
-
-        <h2>Contributing</h2>
-        <p>Please fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
-
-        <h2>Profile</h2>
-        <p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
-
-        <h2>Project Link</h2>
-        <p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
-
-        <h2>Sponsorship</h2>
-        <p>If you find this project useful, please consider sponsoring:</p>
-        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
-            <i class="fas fa-hand-holding-heart"></i> Sponsor
-        </a></p>
-
-        <h2>License</h2>
-        <p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
-
-        <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" class="btn"><i class="fas fa-download"></i> Download Code</a>
+        
+        <h2 id="contributors">Contributors</h2>
+        <ul class="feature-list">
+            <li><strong>Esmail Sarhadi</strong>: Project Lead, Developer</li>
+            <li><strong>Contributors</strong>: Add your name and contributions here.</li>
+        </ul>
+        
+        <h2 id="contact">Contact</h2>
+        <p>If you have any questions or suggestions, feel free to contact us at <a href="mailto:info@binary-tree-analysis.com">info@binary-tree-analysis.com</a>.</p>
     </div>
 
-    <div class="footer">
-        &copy; 2023 Esmail Sarhadi. All rights reserved.
-    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Binary-Tree-Subtree-Analysis. All rights reserved.</p>
+        <p>Follow us on <a href="https://twitter.com/binary_tree_analysis" target="_blank">Twitter</a> and <a href="https://github.com/binary-tree-analysis" target="_blank">GitHub</a>.</p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>
@@ -290,19 +289,5 @@
             observer.observe(el);
         });
     </script>
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        h1, h2, p, ul, ol {
-            opacity: 0;
-        }
-    </style>
 </body>
 </html>
