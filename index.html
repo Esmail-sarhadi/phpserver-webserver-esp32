@@ -7,242 +7,108 @@
     <link rel="shortcut icon" type="image/png" href="android-chrome-512x512.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>IoT Multi-Sensor Monitor with ESP32 | phpserver-webserver-esp32</title>
-    <meta name="description" content="This project is an IoT solution for monitoring environmental conditions using an ESP32 microcontroller. Data is collected from multiple sensors including the DHT21 sensor for temperature and humidity, a pulse sensor, and the MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32.">
+    <title>Multi-Sensor IoT Monitor with ESP32 | phpserver-webserver-esp32</title>
+    <meta name="description" content="This project is an IoT solution for environmental monitoring using the ESP32 microcontroller. The data is managed through a web server with a PHP backend and an HTML frontend.">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --tertiary-color: #e74c3c;
-            --quaternary-color: #f1c40f;
-            --background-color: #f4f4f4;
-            --text-color: #333;
-        }
-        
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background: var(--background-color);
             margin: 0;
             padding: 0;
-            animation: fadeIn 1s ease-out;
+            background-color: #f4f4f4;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
+
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            margin-top: 20px;
-            transition: transform 0.3s ease;
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
         }
-        
-        .container:hover {
-            transform: translateY(-5px);
-        }
-        
-        h1, h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        h1:hover, h2:hover {
-            color: var(--secondary-color);
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-top: 0;
-            padding-top: 20px;
-        }
-        
-        h2 {
-            font-size: 1.8em;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-        }
-        
-        p, ul, ol {
-            margin-bottom: 20px;
-        }
-        
-        ul, ol {
-            padding-left: 20px;
-        }
-        
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        a:hover {
-            color: var(--secondary-color);
-        }
-        
-        .feature-list, .hardware-list, .software-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        
-        .feature-list li, .hardware-list li, .software-list li {
-            margin-bottom: 10px;
-            padding-left: 30px;
+
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #fff 3px solid;
             position: relative;
-            transition: transform 0.3s ease;
         }
-        
-        .feature-list li:before, .hardware-list li:before, .software-list li:before {
-            content: '\f058';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            color: var(--secondary-color);
-            position: absolute;
-            left: 0;
+
+        header h1 {
+            text-align: center;
+            margin: 0;
         }
-        
-        .feature-list li:hover, .hardware-list li:hover, .software-list li:hover {
-            transform: translateX(5px);
+
+        header a {
+            color: #fff;
+            text-decoration: none;
         }
-        
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .language-switcher:hover {
+            background: #555;
+        }
+
+        main {
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
         .btn {
             display: inline-block;
+            font-size: 16px;
+            color: #fff;
+            background: #007bff;
             padding: 10px 20px;
-            font-size: 1em;
-            color: #fff;
-            background-color: var(--primary-color);
-            border: none;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
         }
-        
+
         .btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
+            background: #0056b3;
         }
-        
+
         .footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
+            background: #333;
             color: #fff;
+            padding: 10px;
+            text-align: center;
             margin-top: 20px;
         }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            h2 {
-                font-size: 1.5em;
-            }
+
+        .scroll-btn {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            cursor: pointer;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>IoT Multi-Sensor Monitor with ESP32</h1>
-        <h2>Project Overview</h2>
-        <p>This project is an IoT solution for monitoring environmental conditions using an ESP32 microcontroller. Data is collected from multiple sensors including the DHT21 sensor for temperature and humidity, a pulse sensor, and the MQ135 gas sensor for CO2 levels. The data is displayed on a web interface hosted on the ESP32.</p>
-        
-        <h2>Features</h2>
-        <ul class="feature-list">
-            <li><span class="emoji">📡</span><strong>WiFi Connectivity</strong>: Connects to your home WiFi network.</li>
-            <li><span class="emoji">📈</span><strong>Real-Time Data</strong>: Displays real-time data from all sensors.</li>
-            <li><span class="emoji">📱</span><strong>Web Interface</strong>: Access the data from any device with a web browser.</li>
-            <li><span class="emoji">🛠️</span><strong>GPIO Control</strong>: Toggle an LED on and off via the web interface.</li>
-        </ul>
 
-        <h2>Hardware Required</h2>
-        <ul class="hardware-list">
-            <li><span class="emoji">🔌</span>ESP32 Microcontroller</li>
-            <li><span class="emoji">🌡️</span>DHT21 Temperature and Humidity Sensor</li>
-            <li><span class="emoji">❤️</span>Pulse Sensor</li>
-            <li><span class="emoji">🌫️</span>MQ135 Gas Sensor</li>
-            <li><span class="emoji">💡</span>LED</li>
-            <li><span class="emoji">🔗</span>Wires and Connectors</li>
-        </ul>
+        .scroll-btn:hover {
+            background: #0056b3;
+        }
 
-        <h2>Software Libraries</h2>
-        <ul class="software-list">
-            <li><span class="emoji">🔌</span>ESPAsyncWebServer</li>
-            <li><span class="emoji">💾</span>ESPAsyncTCP</li>
-            <li><span class="emoji">⚙️</span>Adafruit Sensor</li>
-        </ul>
-
-        <h2>Contribution</h2>
-        <p>Please fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
-
-        <h2>Profile</h2>
-        <p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
-
-        <h2>Project Link</h2>
-        <p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
-
-        <h2>Donate</h2>
-        <p>If you find this project useful, please consider donating:</p>
-        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
-            <i class="fas fa-hand-holding-heart"></i> Donate
-        </a></p>
-
-        <h2>License</h2>
-        <p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
-
-        <a href="https://github.com/your-repo-url" class="btn"><i class="fas fa-download"></i> Download Code</a>
-    </div>
-
-    <div class="footer">
-        &copy; 2023 Esmail Sarhadi. All rights reserved.
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>
-        anchors.add();
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Add animation for elements on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        });
-
-        document.querySelectorAll('h1, h2, p, ul, ol').forEach((el) => {
-            observer.observe(el);
-        });
-    </script>
-    <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -255,6 +121,118 @@
         h1, h2, p, ul, ol {
             opacity: 0;
         }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+        }
+
+        .fixed-header a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .fixed-header a:hover {
+            text-decoration: underline;
+        }
     </style>
+</head>
+<body>
+    <header>
+        <div class="fixed-header">
+            <a href="index.html" class="language-switcher">فارسی</a>
+        </div>
+        <div class="container">
+            <h1>Multi-Sensor IoT Monitor with ESP32</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Introduction</h2>
+        <p>This project is an IoT solution for monitoring environmental conditions using the ESP32 microcontroller. The data is collected from various sensors and presented through a web server with a PHP backend and an HTML frontend.</p>
+
+        <h2>Features</h2>
+        <ul>
+            <li>Real-time environmental monitoring</li>
+            <li>Data visualization through a web interface</li>
+            <li>Integration with multiple sensors</li>
+        </ul>
+
+        <h2>Installation</h2>
+        <p>To get started, clone this repository and follow the installation instructions in the <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">GitHub repository</a>.</p>
+
+        <h2>Contribution</h2>
+        <p>Please fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.</p>
+
+        <h2>Profile</h2>
+        <p>Check out my GitHub profile: <a href="https://github.com/Esmail-sarhadi" target="_blank">Esmail Sarhadi</a></p>
+
+        <h2>Project Link</h2>
+        <p>View this project on GitHub: <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32" target="_blank">phpserver-webserver-esp32</a></p>
+
+        <h2>Financial Support</h2>
+        <p>If you find this project useful, please consider supporting it financially:</p>
+        <p><a href="https://nowpayments.io/donation?api_key=REWCYVC-A1AMFK3-QNRS663-PKJSBD2&source=lk_donation&medium=referral" target="_blank" class="btn">
+            <i class="fas fa-hand-holding-heart"></i> Financial Support
+        </a></p>
+
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License - see the <a href="/phpserver-webserver-esp32/LICENSE">LICENSE</a> file for details.</p>
+
+        <div class="footer">
+            <p>This site is open source. <a href="https://github.com/Esmail-sarhadi/phpserver-webserver-esp32/edit/main/README.md">Improve this page</a>.</p>
+        </div>
+    </main>
+
+    <div class="scroll-btn" id="scroll-btn">Scroll to Top</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>
+        anchors.add();
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('h1, h2, p, ul, ol').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Scroll to top button functionality
+        const scrollBtn = document.getElementById('scroll-btn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollBtn.style.display = 'block';
+            } else {
+                scrollBtn.style.display = 'none';
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
